@@ -1,0 +1,564 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Task Management API Documentation",
+    "version": "1.0.0",
+    "description": "This is the API documentation for the Task Management applciation."
+  },
+  "server": [
+    {
+      "url": "http://localhost:3000/api/v1",
+      "description": "Local Server"
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    },
+    "schemas": {
+      "Branch": {
+        "type": "object",
+        "properties": {
+          "ID": {
+            "type": "string"
+          },
+          "Name": {
+            "type": "string"
+          },
+          "Address": {
+            "type": "string"
+          },
+          "Phone": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "ID",
+          "Name",
+          "Address",
+          "Phone"
+        ]
+      },
+      "Employee": {
+        "type": "object",
+        "properties": {
+          "ID": {
+            "type": "string"
+          },
+          "Name": {
+            "type": "string"
+          },
+          "Position": {
+            "type": "string"
+          },
+          "Department": {
+            "type": "string"
+          },
+          "Email": {
+            "type": "string"
+          },
+          "Phone": {
+            "type": "string"
+          },
+          "BranchId": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "ID",
+          "Name",
+          "Position",
+          "Department",
+          "Email",
+          "Phone",
+          "BranchId"
+        ]
+      }
+    }
+  },
+  "paths": {
+    "/api/v1/branches": {
+      "post": {
+        "summary": "Creates a new branch",
+        "tags": [
+          "Branches"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "address": {
+                    "type": "string"
+                  },
+                  "phone": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Branch created successfully",
+            "content": {
+              "application/json": {
+                "example": {
+                  "id": "1",
+                  "name": "Outside Branch",
+                  "address": "Churchill, Manitoba",
+                  "phone": "431-021-0578"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "summary": "Retrieve all branches",
+        "tags": [
+          "Branches"
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of all branches",
+            "content": {
+              "application/json": {
+                "example": [
+                  {
+                    "id": "1",
+                    "name": "Brandon Branch",
+                    "address": "Brandon, Manitoba",
+                    "phone": "204-091-4213"
+                  },
+                  {
+                    "id": "2",
+                    "name": "Selkirk Branch",
+                    "address": "Selkirk, Manitoba",
+                    "phone": "431-309-8709"
+                  }
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/branches/{id}": {
+      "get": {
+        "summary": "Retrieve a branch by its ID",
+        "tags": [
+          "Branches"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The ID to find and retrieve the branch"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Branch retrieved successfully",
+            "content": {
+              "application/json": {
+                "example": {
+                  "id": "4",
+                  "name": "Dakota Branch",
+                  "address": "Dakota, Manitoba",
+                  "phone": "431-230-0812"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Branch not found"
+          }
+        }
+      },
+      "put": {
+        "summary": "Update an existing branch",
+        "tags": [
+          "Branches"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "ID of the branch to update"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "address": {
+                    "type": "string"
+                  },
+                  "phone": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Branch updated successfully",
+            "content": {
+              "application/json": {
+                "example": {
+                  "id": "4",
+                  "name": "Updated Selkirk Branch",
+                  "address": "Selkirk, Manitoba",
+                  "phone": "204-090-01223"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Branch not found"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete a branch",
+        "tags": [
+          "Branches"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "ID of the branch to delete"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Branch deleted successfully"
+          },
+          "404": {
+            "description": "Branch not found"
+          }
+        }
+      }
+    },
+    "/api/v1/employees": {
+      "post": {
+        "summary": "Create a new employee",
+        "tags": [
+          "Employees"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Employee"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Employee created successfully",
+            "content": {
+              "application/json": {
+                "example": {
+                  "ID": "1",
+                  "Name": "Bayle Dayle",
+                  "Position": "Software Engineer",
+                  "Department": "Development",
+                  "Email": "bayle_0226@example.com",
+                  "Phone": "204-312-0112",
+                  "BranchId": "211"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "summary": "Retrieve all employees",
+        "tags": [
+          "Employees"
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of all employees",
+            "content": {
+              "application/json": {
+                "example": [
+                  {
+                    "ID": "1",
+                    "Name": "Bayle Dayle",
+                    "Position": "Software Engineer",
+                    "Department": "Development",
+                    "Email": "bayle_0226@example.com",
+                    "Phone": "204-312-0112",
+                    "BranchId": "211"
+                  },
+                  {
+                    "ID": "2",
+                    "Name": "Aleca Dayle",
+                    "Position": "Software Manager",
+                    "Department": "Management",
+                    "Email": "aleca_0226@example.com",
+                    "Phone": "987-654-3210",
+                    "BranchId": "102"
+                  }
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/employees/branchid/{branchid}": {
+      "get": {
+        "summary": "Retrieve all employees in a specific branch",
+        "tags": [
+          "Employees"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "branchid",
+            "schema": {
+              "type": "integer"
+            },
+            "required": true,
+            "description": "The branch ID to retrieve the employees from"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of employees from the specified branch ID",
+            "content": {
+              "application/json": {
+                "example": [
+                  {
+                    "ID": "1",
+                    "Name": "Bayle Dayle",
+                    "Position": "Software Engineer",
+                    "Department": "Development",
+                    "Email": "bayle_0226@example.com",
+                    "Phone": "204-312-0112",
+                    "BranchId": "211"
+                  },
+                  {
+                    "ID": "2",
+                    "Name": "Heuone Castillo",
+                    "Position": "Support Service",
+                    "Department": "Customer Service",
+                    "Email": "heuone_0226@example.com",
+                    "Phone": "111-222-3333",
+                    "BranchId": "211"
+                  }
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/employees/department/{department}": {
+      "get": {
+        "summary": "Retrieve employees by a specific department",
+        "tags": [
+          "Employees"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "department",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The department to retrieve the employees from"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Employees retrieved successfully",
+            "content": {
+              "application/json": {
+                "example": [
+                  {
+                    "ID": "1",
+                    "Name": "Bayle Dayle",
+                    "Position": "Software Engineer",
+                    "Department": "Development",
+                    "Email": "bayle_0226@example.com",
+                    "Phone": "204-312-0112",
+                    "BranchId": "211"
+                  },
+                  {
+                    "ID": "4",
+                    "Name": "Peter Manson",
+                    "Position": "Software Tester",
+                    "Department": "Testing",
+                    "Email": "peter_0226@example.com",
+                    "Phone": "431-212-6597",
+                    "BranchId": "286"
+                  }
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/employees/{id}": {
+      "get": {
+        "summary": "Retrieve an employee by their ID",
+        "tags": [
+          "Employees"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The ID of the employee to retrieve"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Employee retrieved successfully",
+            "content": {
+              "application/json": {
+                "example": {
+                  "ID": "1",
+                  "Name": "Bayle Dayle",
+                  "Position": "Software Engineer",
+                  "Department": "Development",
+                  "Email": "bayle_0226@example.com",
+                  "Phone": "204-312-0112",
+                  "BranchId": "211"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "summary": "Update an existing employee",
+        "tags": [
+          "Employees"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "ID of the employee to update"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "Name": {
+                    "type": "string"
+                  },
+                  "Position": {
+                    "type": "string"
+                  },
+                  "Department": {
+                    "type": "string"
+                  },
+                  "Email": {
+                    "type": "string"
+                  },
+                  "Phone": {
+                    "type": "string"
+                  },
+                  "BranchId": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Employee updated successfully",
+            "content": {
+              "application/json": {
+                "example": {
+                  "ID": "1",
+                  "Name": "Bayle Dayle",
+                  "Position": "Senior Software Engineer",
+                  "Department": "Development",
+                  "Email": "bayle_0226@example.com",
+                  "Phone": "204-312-0112",
+                  "BranchId": "131"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete an employee",
+        "tags": [
+          "Employees"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "ID of the employee to delete"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Employee deleted successfully"
+          }
+        }
+      }
+    }
+  },
+  "tags": []
+}
